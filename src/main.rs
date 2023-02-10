@@ -11,18 +11,25 @@ mod vga_buffer;
 
 use core::panic::PanicInfo;
 
-// don't mangle the name of this function
-// this function is the entry point, since the linker looks for a function
-// named `_start` by default
-#[no_mangle]
-pub extern "C" fn _start() {
-    println!("Hello World{}", "!");
+// // don't mangle the name of this function
+// // this function is the entry point, since the linker looks for a function
+// // named `_start` by default
 
-    #[cfg(test)]
-    test_main();
+// #[no_mangle]
+// pub extern "C" fn _start() {
+//     println!("Hello World{}", "!");
 
-    loop {}
-}
+//     blog_os::init();
+
+//     // Invoke a breakpoint exception
+//     x86_64::instructions::interrupts::int3();
+
+//     #[cfg(test)]
+//     test_main();
+
+//     println!("It did not crash");
+//     loop {}
+// }
 
 /// This function is called on panic.
 #[cfg(not(test))]
@@ -36,4 +43,23 @@ fn panic(info: &PanicInfo) -> ! {
 #[panic_handler]
 fn panic(info: &PanicInfo) -> ! {
     blog_os::test_panic_handler(info)
+}
+
+#[no_mangle]
+pub extern "C" fn _start() -> ! {
+    println!("Hello World{}", "!");
+
+    blog_os::init();
+
+    // trigger a page fault
+    unsafe {
+        *(0xdeadbeef as *mut u64) = 42;
+    };
+
+    // as before
+    #[cfg(test)]
+    test_main();
+
+    println!("It did not crash!");
+    loop {}
 }
