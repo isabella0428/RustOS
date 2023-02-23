@@ -61,6 +61,11 @@ pub fn hlt_loop() -> ! {
     }
 }
 
+#[cfg(test)]
+use bootloader::{entry_point};
+
+#[cfg(test)]
+entry_point!(test_kernel_main);
 /// Entry point for `cargo test`
 #[cfg(test)]
 fn test_kernel_main(boot_info: &'static BootInfo)  -> ! {
