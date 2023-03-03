@@ -1,9 +1,19 @@
+pub mod bump;
+pub mod linked_list;
+pub mod fixed_size_block;
+
 use alloc::alloc::{GlobalAlloc, Layout};
 use core::{ptr::null_mut};
 use linked_list_allocator::LockedHeap;
+use bump::BumpAllocator;
+use fixed_size_block::FixedSizeBlockAllocator;
 
 pub const HEAP_START: usize = 0x_4444_4444_0000;
 pub const HEAP_SIZE: usize = 100 * 1024;
+
+#[global_allocator]
+static ALLOCATOR: Locked<FixedSizeBlockAllocator> = Locked::new(
+    FixedSizeBlockAllocator::new());
 
 use x86_64::{
     structures::paging::{
@@ -12,8 +22,10 @@ use x86_64::{
     VirtAddr,
 };
 
-#[global_allocator]
-static ALLOCATOR: LockedHeap = LockedHeap::empty();
+use self::linked_list::LinkedListAllocator;
+
+// #[global_allocator]
+// static ALLOCATOR: LockedHeap = LockedHeap::empty();
 
 pub struct Dummy;
 
@@ -25,6 +37,26 @@ unsafe impl GlobalAlloc for Dummy {
     unsafe fn dealloc(&self, _ptr: *mut u8, _layout: Layout) {
         panic!("dealloc should be never called")
     }
+}
+
+fn align_up(addr: usize, align: usize) -> usize {
+    (addr + align - 1) & !(align - 1)
+}
+
+pub struct Locked<A> {
+	inner: spin::Mutex<A>,
+}
+
+impl<A> Locked<A> {
+	pub const fn new(inner: A) -> Self {
+		Locked {
+			inner: spin::Mutex::new(inner),
+		}
+	}
+
+	pub fn lock(&self) -> spin::MutexGuard<A> {
+		self.inner.lock()
+	}
 }
 
 pub fn init_heap(
