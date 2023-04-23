@@ -8,7 +8,7 @@ I list the main structure of the repo.
 ├── Cargo.toml							// Lists the main dependencies of the repo
 ├── README.md
 ├── src
-│   ├── allocator					    // Provides several implementation for heap allocators
+│   ├── allocator						// Provides several implementation for heap allocators
 │   │   ├── bump.rs						
 │   │   ├── fixed_size_block.rs
 │   │   └── linked_list.rs
