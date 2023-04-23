@@ -17,7 +17,7 @@ I list the main structure of the repo.
 │   ├── interrupts.rs					// Specifies the interrupt handlers
 │   ├── lib.rs
 │   ├── main.rs
-│   ├── memory.rs                       // Specifies memory mapping logistics
+│   ├── memory.rs					    // Specifies memory mapping logistics
 │   ├── serial.rs						// Print text to the screen
 │   ├── task							// Creates task executor
 │   │   ├── executor.rs
