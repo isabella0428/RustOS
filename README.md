@@ -3,6 +3,7 @@ BlogOS is a simple kernel implemented in Rust. The kernel is compiled into booti
 
 ### Repository structure
 I list the main structure of the repo.
+```
 ├── Cargo.lock
 ├── Cargo.toml							// Lists the main dependencies of the repo
 ├── README.md
@@ -29,7 +30,7 @@ I list the main structure of the repo.
     ├── heap_allocation.rs
     ├── should_panic.rs
     └── stack_overflow.rs
-
+```
 
 ### Execution environment
 1. Install Rust nightly
