@@ -31,13 +31,13 @@ impl ScancodeStream {
 		ScancodeStream {_private: ()}
 	}
 
-	fn poll_next(self: Pin<&mut Self>, cx: &mut Context) -> Poll<Option<u8>> {
-		let queue = SCANCODE_QUEUE.try_get().expect("not initialized");
-		match queue.pop() {
-			Ok(scancode) => Poll::Ready(Some(scancode)),
-			Err(crossbeam_queue::PopError) => Poll::Pending,
-		}
-	}
+	// fn poll_next(self: Pin<&mut Self>, cx: &mut Context) -> Poll<Option<u8>> {
+	// 	let queue = SCANCODE_QUEUE.try_get().expect("not initialized");
+	// 	match queue.pop() {
+	// 		Ok(scancode) => Poll::Ready(Some(scancode)),
+	// 		Err(crossbeam_queue::PopError) => Poll::Pending,
+	// 	}
+	// }
 }
 
 use futures_util::stream::Stream;

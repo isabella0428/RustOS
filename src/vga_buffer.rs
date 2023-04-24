@@ -38,8 +38,8 @@ pub enum Color {
 #[repr(transparent)]
 struct ColorCode(u8);
 impl ColorCode {
-    fn new(foregroundColor: Color, backgroundColor: Color) -> ColorCode {
-        ColorCode((backgroundColor as u8) << 4 | (foregroundColor as u8))
+    fn new(foreground_color: Color, background_color: Color) -> ColorCode {
+        ColorCode((background_color as u8) << 4 | (foreground_color as u8))
     }
 }
 

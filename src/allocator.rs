@@ -4,8 +4,6 @@ pub mod fixed_size_block;
 
 use alloc::alloc::{GlobalAlloc, Layout};
 use core::{ptr::null_mut};
-use linked_list_allocator::LockedHeap;
-use bump::BumpAllocator;
 use fixed_size_block::FixedSizeBlockAllocator;
 
 pub const HEAP_START: usize = 0x_4444_4444_0000;
@@ -21,8 +19,6 @@ use x86_64::{
     },
     VirtAddr,
 };
-
-use self::linked_list::LinkedListAllocator;
 
 // #[global_allocator]
 // static ALLOCATOR: LockedHeap = LockedHeap::empty();
